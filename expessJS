@@ -1,0 +1,190 @@
+NodeJS Express
+1)Expressjs nedir?
+ExpressJS, Node.js tabanlı, minimalistik bir web uygulama çerçevesidir. Web uygulaması geliştirirken gereksinim duyulan temel özellikleri sağlar ve aynı zamanda geniş bir eklenti ve araç seti sunar.
+
+ExpressJS, HTTP sunucusu oluşturma, yönlendirme, sorgu parametreleri alma, şablon motoru kullanımı, middleware ekleme ve diğer birçok işlevi kolaylaştıran bir dizi yöntem ve fonksiyon içerir. Aynı zamanda, üçüncü taraf modülleri kullanarak uygulamaya özellikler eklemeyi ve uygulamanın daha özelleştirilmiş bir hale getirilmesini sağlar.
+Sonuç olarak, ExpressJS, minimalistik bir web uygulama çerçevesi olmasına rağmen, Node.js ekosistemi içerisinde oldukça popülerdir. Kolay öğrenilebilirliği, geniş eklenti ve araç seti, MVC tasarım desenine uygun yapısı, middleware özelliği, RESTful web hizmetlerinin geliştirilmesine uygunluğu gibi özellikleriyle, web uygulama geliştiricileri için önemli bir araçtır.
+
+MVC (Model-View-Controller) mimarisi, bir yazılım uygulamasının üç ana bileşeninin (model, görünüm ve denetleyici) birbirinden ayrı tutulduğu bir tasarım desenidir. Model, uygulamanın veri yapısını temsil ederken, görünüm kullanıcının uygulama ile etkileşime geçtiği arayüzü ve denetleyici, kullanıcının girdilerini alır, modeli günceller ve görünümü güncelleyerek kullanıcıya yanıt verir. Bu tasarım deseni, uygulamanın yeniden kullanılabilirliğini ve bakımını kolaylaştırır.
+Middleware, bir uygulamanın HTTP isteklerini işlemek için kullanılan bir ara yazılım katmanıdır. Middleware, gelen istekleri işlemeden önce veya sonra işlem yapabilir. Örneğin, bir kimlik doğrulama ara yazılımı, kullanıcının giriş yapmadan önce tüm isteklerini engelleyebilir veya bir isteğin sonucunu değiştirebilir.(a ve b konuşması var bunların arasında durup güvenliklerine bakıyor orta katman)
+ RESTful web hizmetlerinin geliştirilmesi için de kullanılabilir. REST (Representational State Transfer), internet protokolleri üzerinden web servisleri için bir mimari stilidir. ExpressJS, RESTful web hizmetlerinin oluşturulmasını kolaylaştıran bir dizi yöntem ve fonksiyon içerir.
+
+
+2)uygulama oluşturma
+Öncelikle Node.js'in kurulu olduğundan emin olun. Daha sonra, terminale "npm install express" komutunu girerek ExpressJS kütüphanesini yükleyin.
+Daha sonra, uygulamanızın ana dizininde "app.js" adında bir dosya oluşturun. Bu dosyada, uygulamanızın ana kodunu yazacaksınız.
+İlk adım olarak, ExpressJS'i kullanarak sunucunuzu başlatın ve istekleri işlemeye hazır hale getirin:
+
+const express = require('express');
+const app = express();     //creats an express application
+app.listen(3000, () => {
+  console.log('Server started on port 3000');
+});
+Şimdi birkaç basit yol oluşturalım. Aşağıdaki kod, "/home" yolunu dinleyecek ve bir mesaj döndürecek:
+
+app.get('/home', (req, res) => {
+  res.send('Welcome to my homepage');
+});
+Uygulamanıza birkaç daha yolu ekleyebilirsiniz:
+
+app.get('/about', (req, res) => {
+  res.send('This is the about page');
+});
+
+app.get('/contact', (req, res) => {
+  res.send('Contact me at user@example.com');
+});
+Daha sonra, uygulamanızda middleware kullanabilirsiniz. Middleware, herhangi bir işlemi gerçekleştirmeden önce istekleri ele alır. Örneğin, aşağıdaki kod, herhangi bir yol isteğinde önce bir middleware işlemi gerçekleştirir:
+
+app.use((req, res, next) => {
+  console.log('Time:', Date.now());
+  next();
+});
+
+Şablon motorlarını kullanarak HTML dosyalarını dinamik olarak oluşturabilirsiniz. Örneğin, aşağıdaki kod, "views" klasöründeki "index.ejs" dosyasını kullanarak bir HTML dosyası oluşturur:
+//Şablon motorları (Template engines), bir web uygulamasında dinamik olarak oluşturulan içeriğin sunulmasını kolaylaştıran bir yazılım bileşenidir. Şablon motorları, bir şablon (template) dosyası kullanarak değişkenler, ifadeler ve koşullar ile birleştirerek bir HTML sayfası veya başka bir belge türü oluştururlar.
+Şablon motorları, web uygulamalarında görüntüleme katmanında kullanılır. Bir web uygulaması genellikle bir veritabanından veya diğer kaynaklardan veri toplar ve bu verileri kullanarak bir web sayfası oluşturur. Şablon motorları, bu web sayfasında dinamik olarak değişen verilerin sunulmasını sağlamak için kullanılır.Örneğin, bir web uygulaması bir kullanıcının adını, e-posta adresini ve bir fotoğrafını görüntülemek istediğinde, şablon motoru bu verileri bir şablon dosyasında tanımlanan değişkenlerle birleştirerek bir HTML sayfası oluşturur. Böylece web uygulaması, her bir kullanıcının özelliklerine göre farklı bir sayfa oluşturabilir.
+En popüler şablon motorlarından bazıları Handlebars, Mustache, EJS, Pug (eski adıyla Jade), Twig ve Jinja2'dir.
+
+app.set('view engine', 'ejs');
+app.get('/', (req, res) => {
+  const data = {
+    title: 'Homepage',
+    message: 'Welcome to my homepage'
+  };
+  res.render('index', data);
+});
+//Express.js'de "set" ve "get" fonksiyonları, uygulamanın ayarlarını ve özelliklerini yönetmek için kullanılır. "set" fonksiyonu, uygulamanın bir özelliğini belirlemek için kullanılırken, "get" fonksiyonu, uygulamanın belirli bir özelliğini almak için kullanılır.
+"set" fonksiyonu, uygulamanın ayarlarını değiştirmek için kullanılır. Örneğin, uygulamanın port numarasını belirlemek için "set" fonksiyonu kullanılabilir. Aşağıdaki örnek, uygulamanın port numarasını 3000 olarak ayarlar:
+app.set('port', 3000);
+"get" fonksiyonu ise, uygulamanın belirli bir ayarının değerini almak için kullanılır. Örneğin, uygulamanın port numarasını almak için "get" fonksiyonu kullanılabilir. Aşağıdaki örnek, uygulamanın port numarasını alır:
+const port = app.get('port');
+Bu örneklerde, "set" ve "get" fonksiyonları arasındaki fark, bir ayarın değerinin ayarlanması ve alınmasıdır. "set" fonksiyonu, bir ayarın değerini ayarlamak için kullanılırken, "get" fonksiyonu, bir ayarın değerini almak için kullanılır,oluşturduğumuz web sitesini görüntüleyebilmek için.//
+
+Son olarak, "npm start" komutunu terminale girerek uygulamanızı başlatın ve tarayıcınızda "http://localhost:3000/" adresine giderek uygulamanızı gözlemleyebilirsiniz.
+Bu şekilde, ExpressJS ile bir uygulama oluşturabilirsiniz. Ancak, uygulamanızın karmaşıklaştıkça, daha fazla yol, middleware ve fonksiyon eklemek isteyeceksiniz. Bunun için ExpressJS'in zengin özelliklerini kullanabilirsiniz.
+
+
+3)gelen isteklerin karşılanması 
+app.get('/home', (req, res) => {
+  res.send('Welcome to my homepage');
+});
+Uygulamanıza birkaç daha yolu ekleyebilirsiniz:
+
+app.get('/about', (req, res) => {
+  res.send('This is the about page');
+});
+
+app.get('/contact', (req, res) => {
+  res.send('Contact me at user@example.com');
+});
+
+
+4)file serve 
+gelen isteklere html dosyasında hazırladığımız yanıtları iletmek
+app.get('/' ,(req,res) => {
+res.sendFile(__dirname + '/index.html')
+
+app.get('/user' ,(req,res) => {
+res.sendFile(__dirname + '/user.html')
+
+app.get('/profile' ,(req,res) => {
+res.sendFile(__dirname + '/profile.html')
+
+app.get('/test' ,(req,res) => {
+res.sendFile(__dirname + '/test.html')
+
+
+5)static file serve
+Resimler, CSS dosyaları ve JavaScript dosyaları gibi statik dosyaları sunmak için Express'te express.static yerleşik ara yazılım işlevini kullanırız.
+express.static(root, [options])
+
+statik varlıkların sunulacağı kök dizini belirtir. Örneğin, public adlı bir dizinde resimler, CSS dosyaları ve JavaScript dosyaları sunmak için aşağıdaki kodu kullanın:
+app.use(express.static('public'))
+
+örnek olarak asset dizini oluşturalım içerisinde index.css index.html abc.txt olsun (public içerisinde) ve static file serve kullanmak için path, express ve fs import edelim
+app.use('/assets' , express.static('assets'))   //css içerisinde background color vs belirlenebilir ve arkaplan rengini bu şekilde değiştirebiliriz
+resim eklemek istersek
+bulduğumuz resmi pathimiz içerisine farklı kaydediyoruz 
+ve gelip gelmediğini kontrol etmek için oluşturduğumuz localhosta => localhost:5000/assets/linux.png
+geldi!!
+
+
+6)redirect
+URL,sayfayı yönlendirme
+
+app.get('/test', (req, res) => {
+  res.redirect('/user')
+})
+
+
+7)JSON nedir?
+JSON (JavaScript Object Notation), veri aktarımı için kullanılan bir veri formatıdır. JSON, anahtar-değer çiftlerinden oluşan bir veri yapısına sahiptir ve insanlar tarafından da kolayca okunabilir. JSON, JavaScript programlama dilinde nesneleri ve dizileri temsil etmek için kullanılan sözdizimine benzer bir yapıya sahiptir.
+JSON, web uygulamalarında ve RESTful web servislerinde sıklıkla kullanılır. Ayrıca, farklı programlama dilleri arasında veri aktarımı yapmak için de kullanılabilir. JSON, XML'den daha az kod içerir ve daha hızlı işlem yapabilir. JSON verileri, veri yapısı ve semantiği nedeniyle, verileri kolayca işleyen ve okuyan uygulamalar için idealdir. {} 
+
+Sonuç olarak, JSON hafif, okunabilir, dil bağımsız, işlemesi kolay ve yaygın olarak kullanılan bir veri formatıdır. Veri depolama ve aktarımı için kullanışlıdır ve çeşitli programlama dilleri ve platformlar arasında veri aktarımını kolaylaştırır.
+JSON.parse() yöntemi, JSON verisini bir JavaScript nesnesine dönüştürür. JSON.stringify() yöntemi, bir JavaScript nesnesini JSON verisine dönüştürür.
+
+
+
+8)JSON response
+response json biçiminde göndermek istersek;
+app.get('/getjson' ,(req,res)=> {        //getjson url ine ulaştığın zaman res döndür anlamında kullanılır.
+res.json({id:1, ad:'Ali'})
+veya array gönderelim
+app.get('/getjson' ,(req,res)=> {
+res.json([{id:1, ad:'Ali'} , {id:2 ad:'Eren'}])
+=oluşturduğumuz localhosttan bakabiliriz 
+
+
+9)http metotları
+HTTP protokolü, JSON verilerinin gönderilmesi için kullanılan birkaç farklı yönteme sahiptir. Bunlar şunlardır:
+GET: GET yöntemi, sunucudan belirli bir kaynağın verilerini almak için kullanılır. JSON verileri, URL üzerinden gönderilebilir. Örneğin: http://example.com/data.json.
+
+POST: POST yöntemi, sunucuya yeni veriler göndermek için kullanılır. JSON verileri, HTTP isteği gövdesinde (request body) gönderilir. Bu yöntem, özellikle web formu verilerinin sunucuya gönderilmesinde yaygın olarak kullanılır.
+
+PUT: PUT yöntemi, sunucuya belirli bir kaynağı güncellemek için kullanılır. JSON verileri, HTTP isteği gövdesinde (request body) gönderilir.
+
+DELETE: DELETE yöntemi, sunucudan belirli bir kaynağı silmek için kullanılır. JSON verileri bu durumda genellikle kullanılmaz.
+Bu HTTP yöntemleri, JSON verilerinin web uygulamalarında nasıl kullanılabileceğine ilişkin sadece birkaç örnektir. Ancak, web uygulamaları genellikle daha karmaşık işlevlere sahip olacağından, daha farklı HTTP yöntemleri ve JSON kullanımları da yaygın olarak görülebilir.
+
+10)http durum kodları 
+HTTP durum kodları, web tarayıcısı veya diğer istemci uygulamaların bir HTTP isteği yaptıktan sonra sunucudan alacakları cevaplarla ilgilidir. Sunucu, bir isteği aldığında, işleme başlar ve sonuçta bir cevap oluşturur. Bu cevap, bir HTTP durum kodu ve istemcinin beklediği yanıt verilerinden oluşur. Aşağıda en yaygın HTTP durum kodlarından bazıları açıklanmaktadır:
+
+1xx: Bilgi
+Bu durum kodları, sunucunun bir isteği aldığını ve işleme koymaya başladığını, ancak henüz tamamlamadığını ifade eder. Bu durum kodları genellikle istemcide herhangi bir aksiyon gerektirmez.
+
+2xx: Başarılı
+Bu durum kodları, sunucunun isteği başarıyla aldığını ve işleme koyduğunu ifade eder. En yaygın olanları şunlardır:
+
+200: Başarılı bir GET isteği ile yanıt verildi.
+201: Kaynak başarıyla oluşturuldu.
+204: İstek başarıyla işlendi, ancak sunucu yanıt vermedi (no content).
+3xx: Yönlendirme
+Bu durum kodları, sunucunun isteği işleyebilmesi için istemcinin başka bir yere yönlendirilmesi gerektiğini ifade eder. En yaygın olanları şunlardır:
+301: İstek edilen kaynak kalıcı olarak başka bir yere taşındı.
+302: İstek edilen kaynak geçici olarak başka bir yere taşındı.
+4xx: İstemci Hatası
+Bu durum kodları, sunucunun isteği işleyemediği ve bunun nedeninin istemciden kaynaklandığını ifade eder. En yaygın olanları şunlardır:
+400: İstek hatalıdır (bad request).
+401: Kimlik doğrulama gereklidir (unauthorized).
+403: İstek yasaklanmıştır (forbidden).
+404: İstek edilen kaynak bulunamadı (not found).
+5xx: Sunucu Hatası
+Bu durum kodları, sunucunun isteği işleyemediği ve bunun nedeninin sunucuda bir hata olduğunu ifade eder. En yaygın olanları şunlardır:
+500: Sunucu hatası (internal server error).
+503: Sunucu şu anda kullanılamıyor (service unavailable).
+Bu, en yaygın HTTP durum kodlarından sadece birkaçıdır. İstemciler, bu kodları kullanarak sunucunun yanıtını anlamaya ve uygun aksiyonları almaya çalışırlar.
+
+
+11)postman kurulumu
+Postman, API (Application Programming Interface) testleri yapmak, API'leri geliştirmek ve API'lerinizi belgelemek için kullanabileceğiniz bir yazılım aracıdır. Postman, HTTP isteklerini oluşturmanıza, test etmenize ve API'lerin yanıtlarını kontrol etmenize olanak tanır.
+Postman, bir dizi farklı HTTP isteği yöntemini (GET, POST, PUT, DELETE vb.) destekler ve ayrıca RESTful API'lerin test edilmesi için kullanışlı bir arayüze sahiptir. Postman, API testlerinizi kolaylaştıran bir dizi özellik sunar, örneğin:
+API'leri belgeleme: Postman, API'lerinizi belgeleme işlemini basitleştirir ve diğer geliştiricilerin API'lerinizin nasıl kullanılacağına dair açık bir rehber sunmanıza olanak tanır.
+Çalışma zamanı ortam değişkenleri: API testlerinizi farklı ortamlarda yapmanız gerektiğinde, Postman'da kolayca yönetilebilen çalışma zamanı ortam değişkenleri kullanabilirsiniz.
+Veri sıralama: Postman, API'lerinizin yanıtlarındaki verileri otomatik olarak sıralamak için kullanışlı bir araç sunar.
+Test senaryoları: Postman, API testleri yaparken hata olasılıklarını sınırlamak ve testlerinizi daha kesin hale getirmek için test senaryoları oluşturmanıza olanak tanır.
+Bu özelliklerin yanı sıra, Postman API testleri yaparken hızlı, güvenli ve verimli bir şekilde çalışmanıza yardımcı olur. API testleri yapmak veya geliştirmek isteyen geliştiriciler için Postman kurmak oldukça faydalıdır.
+
+
+12)http metotlarını uygulama
